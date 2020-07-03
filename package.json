@@ -1,0 +1,29 @@
+{
+  "name": "ts-never-proves",
+  "version": "0.1.0",
+  "description": "",
+  "main": "",
+  "scripts": {
+    "test": "echo TODO; exit 1",
+    "lint": "eslint \"**/*.{js,ts}\" --fix && stylelint \"src/styles/**.scss\" --fix"
+  },
+  "keywords": [],
+  "author": "Luma",
+  "license": "Unlicense",
+  "engines": {
+    "npm": "use yarn"
+  },
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^3.1.0",
+    "@typescript-eslint/parser": "^2.26.0",
+    "eslint": "6.8.0",
+    "eslint-config-airbnb": "18.1.0",
+    "eslint-config-airbnb-typescript": "8.0.2",
+    "eslint-plugin-import": "^2.20.1",
+    "eslint-plugin-jsx-a11y": "^6.2.3",
+    "eslint-plugin-react": "^7.19.0",
+    "eslint-plugin-react-hooks": "2.5.0",
+    "typescript": "^3.8.3"
+  }
+}
+
