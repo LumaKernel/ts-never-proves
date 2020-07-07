@@ -90,13 +90,13 @@ export type Geq<N, M> = Leq<M, N>;
 export type Lt<N, M> = Not<Geq<N, M>>;
 export type Gt<N, M> = Not<Leq<N, M>>;
 
-type IsPrime_PropA<N, M> =
+type IsPrime_SubA<N, M> =
   Eq<N, M> extends True
   ? True
   : Eq<Mod<N, M>, O> extends True
     ? False
     : {
-      bool: UnwrapBool<IsPrime_PropA<N, S<M>>>
+      bool: UnwrapBool<IsPrime_SubA<N, S<M>>>
     };
 
 export type IsPrime<N>=
@@ -104,5 +104,5 @@ export type IsPrime<N>=
   ? False
   : Eq<N, _1> extends True
     ? False
-    : IsPrime_PropA<N, _2>;
+    : IsPrime_SubA<N, _2>;
 
