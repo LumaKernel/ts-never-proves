@@ -21,17 +21,21 @@ module.exports = {
       rules: {
         "@typescript-eslint/camelcase": "off",
         "@typescript-eslint/explicit-function-return-type": "off",
+        "@typescript-eslint/ban-types": [
+          "error",
+          {
+            "types": {
+              "{}": false,
+            },
+            "extendDefaults": true,
+          }
+        ],
         "no-console": "error",
         "no-debugger": "error",
       },
     },
     {
       files: ["*.js"],
-      parser: "babel-eslint",
-      parserOptions: {
-        ecmaVersion: 2020,
-        sourceType: "module",
-      },
       extends: ["eslint:recommended"],
       env: {
         es6: true,

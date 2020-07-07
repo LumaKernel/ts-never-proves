@@ -18,3 +18,6 @@ export type _NoDisproofFrom<N> =
   };
 
 export type Goldbach = _NoDisproofFrom<_4>;  // <- saying any ヽ(~～~ )ノ
+
+export type GoldbachProvedByNever = Goldbach extends True ? never : 0;
+export type GoldbachDisprovedByNever = Goldbach extends True ? 0 : never;

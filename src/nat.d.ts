@@ -1,4 +1,4 @@
-import {False, True, Bool, UnwrapBool, Not} from '@/bool'
+import { False, Not, True, UnwrapBool } from '@/bool';
 
 type UnwrapNat<T> =
   T extends { nat: infer Inner }
