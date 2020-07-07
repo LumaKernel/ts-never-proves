@@ -43,6 +43,12 @@ module.exports = {
         "no-debugger": "error",
       },
     },
+    {
+      files: ["test/**/*.ts"],
+      rules: {
+        "@typescript-eslint/ban-ts-comment": "off",
+      },
+    },
   ],
   ignorePatterns: ["!.eslintrc.js"],
 };

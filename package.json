@@ -4,8 +4,8 @@
   "description": "",
   "main": "",
   "scripts": {
-    "test": "echo TODO; exit 1",
-    "lint": "eslint \"**/*.{js,ts}\" --fix && stylelint \"src/styles/**.scss\" --fix"
+    "test": "tsc --noEmit",
+    "lint": "eslint \"**/*.{js,ts}\" --fix"
   },
   "keywords": [],
   "author": "Luma",

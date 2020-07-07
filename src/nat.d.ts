@@ -1,89 +1,108 @@
-export type Nat = { prev: Nat } | {};
+import {False, True, Bool, UnwrapBool, Not} from '@/bool'
+
+type UnwrapNat<T> =
+  T extends { nat: infer Inner }
+  ? Inner
+  : never;
+
+// pred: predecessor
+export type Nat = { pred: Nat } | {};
 
 export type O = {}
-export type S<N extends Nat> = {
-  prev: N;
+export type S<N> = {
+  pred: N;
 }
 
-type _0 = O;
-type _1 = S<_0>;
-type _2 = S<_1>;
-type _3 = S<_2>;
-type _4 = S<_3>;
-type _5 = S<_4>;
-type _6 = S<_5>;
-type _7 = S<_6>;
+export type _0 = O;
+export type _1 = S<_0>;
+export type _2 = S<_1>;
+export type _3 = S<_2>;
+export type _4 = S<_3>;
+export type _5 = S<_4>;
+export type _6 = S<_5>;
+export type _7 = S<_6>;
+export type _8 = S<_7>;
+export type _9 = S<_8>;
+export type _10 = S<_9>;
 
-export type Prev<N extends Nat> =
-  { _: N } extends { _: { prev: infer NPrev } }
-  ? { _: NPrev } extends { _: Nat }
-  ? NPrev
-  : O
+export type Pred<N> =
+  N extends { pred: infer NPred }
+  ? NPred extends Nat
+    ? NPred
+    : O
   : O;
 
-export type Add<N extends Nat, M extends Nat> =
-  { _: N } extends { _: O }
+export type Add<N, M> =
+  Eq<N, O> extends True
   ? M
-  : {
-    prev: Prev<Add<Prev<N>, S<M>>>
-  };
+  : Eq<M, O> extends True
+    ? N
+    : {
+      pred: Pred<Add<Pred<N>, S<M>>>;
+    };
 
-export type Sub<N extends Nat, M extends Nat> =
-  { _: M } extends { _: O }
-  ? N
-  : {
-    prev: Prev<Sub<Prev<N>, Prev<M>>>
-  };
+export type Sub<N, M> =
+  Leq<N, M> extends True
+  ? O
+  : Eq<M, O> extends True
+    ? N
+    : {
+      pred: Pred<Sub<Pred<N>, Pred<M>>>;
+    };
 
-export type Mul<N extends Nat, M extends Nat> =
-  { _: N } extends { _: O }
+export type Mul<N, M> =
+  Eq<N, O> extends True
   ? O
   : {
-    prev: Prev<Add<M, Mul<Prev<N>, M>>>
+    pred: Pred<Add<M, Mul<Pred<N>, M>>>;
   };
 
-export type Div<N extends Nat, M extends Nat> =
-  { _: N } extends { _: O }
+export type Div<N, M> =
+  Eq<N, O> extends True
   ? O
-  : {
-    prev: Prev<S<Div<Sub<N, M>, M>>>
-  };
+  : Lt<N, M> extends True
+    ? O
+    : {
+      pred: Div<Sub<N, M>, M>;
+    };
 
-export type Mod<N extends Nat, M extends Nat> =
-  { _: Lt<N, M> } extends { _: O }
-  ? N
-  : {
-    prev: Prev<Mod<Sub<N, M>, M>>
-  };
+type Mod_<N, M> =
+  Lt<N, M> extends True
+  ? { nat: N }
+  : Eq<N, O> extends True
+    ? { nat: O }
+    : {
+      nat: UnwrapNat<Mod_<Sub<N, M>, M>>;
+    };
 
-type True = { _: true }
-type False = { _: false }
-type Bool = True | False
-export type UnwrapBool<B extends Bool> =
-  { _: B } extends { _: { _: infer BInner } }
-  ? { _: BInner } extends { _: true }
-    ? true
-    : false
-  : false;
-type ShouldBeBool<T> = { _: T } extends { _: Bool } ? T : False;
-type Not<T> = { _: T } extends { _: True } ? True : False;
-export type Leq<N extends Nat, M extends Nat> =
-  { _: N } extends { _: O }
+export type Mod<N, M> = UnwrapNat<Mod_<N, M>>;
+
+export type Eq<N, M> = N extends M ? M extends N ? True : False : False;
+export type Leq<N, M> =
+  Eq<N, O> extends True
   ? True
-  : { _: M } extends { _: O }
+  : Eq<M, O> extends True
+    ? False
+    : {
+      bool: UnwrapBool<Leq<Pred<N>, Pred<M>>>;
+    };
+export type Geq<N, M> = Leq<M, N>;
+export type Lt<N, M> = Not<Geq<N, M>>;
+export type Gt<N, M> = Not<Leq<N, M>>;
+
+type IsPrime_PropA<N, M> =
+  Eq<N, M> extends True
+  ? True
+  : Eq<Mod<N, M>, O> extends True
+    ? False
+    : {
+      bool: UnwrapBool<IsPrime_PropA<N, S<M>>>
+    };
+
+export type IsPrime<N>=
+  Eq<N, O> extends True
   ? False
-  : { _: UnwrapBool<Leq<Prev<N>, Prev<M>>> };
-export type Geq<N extends Nat, M extends Nat> = Leq<M, N>;
-export type Lt<N extends Nat, M extends Nat> = Not<Geq<N, M>>;
-export type Gt<N extends Nat, M extends Nat> = Not<Leq<N, M>>;
-
-type ProbA<N extends Nat> =
-  { _: N } extends { _: _0 }
-    ? True
-    : { _: N } extends { _: _1 }
-      ? True
-      : { _: Mod<N, _2> } extends { _: True }
-        ? { _: UnwrapBool<ProbA<Div<N, _2>>> }
-        : { _: UnwrapBool<ProbA<Mul<N, _3>>> }
-
+  : Eq<N, _1> extends True
+    ? False
+    : IsPrime_PropA<N, _2>;
 
