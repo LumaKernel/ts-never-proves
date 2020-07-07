@@ -9,8 +9,8 @@ This implements [Peano arithmetic](https://en.wikipedia.org/wiki/Peano_axioms) o
 Generally, it is [proved to impossible](https://en.wikipedia.org/wiki/Halting_problem)!
 That is TypeScript typing system also can't.
 
-Type `GoldbachProvedByNever` is calculated as `never`.
-Hm, `never` proves ? No, never proves.
+Type `GoldbachProvedByNever` is calculated as `never`.  
+Hm, `never` proves ? No, never proves.  
 ( This is because type `Goldbach` includes `any`. )
 
 ### See also
